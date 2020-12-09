@@ -60,6 +60,15 @@ def resize(r,factor):
 def average(number1,number2):
     return (number1+number2)/2
 
+def average_rectangle(rect1,rect2):
+    middleX=(x(rect1)+x(rect2))/2
+    middleY=(y(rect1)+y(rect2))/2
+    avg_len=average(length(rect1),length(rect2))
+    avg_wid=average(width(rect1),width(rect2))
+    return make_rectangle(middleX,middleY,avg_len,avg_wid)
+
+
+#testing
 r1=make_rectangle(3,4,10,26)
 print(x(r1))
 print(diagonal(r1))
@@ -68,7 +77,12 @@ print(center(r1))
 print(distance(r1,make_rectangle(6,9,5,8)))
 print(print_rectangle(move(r1,2,-3)))
 print(print_rectangle(resize(r1,0.5)))
+r2=make_rectangle(6,9,5,8)
+r3=make_rectangle(3,4,10,26)
+print_rectangle(r3)
+print_rectangle(r2)
 
+print_rectangle(average_rectangle(r3,r2))
 
 
 #part B

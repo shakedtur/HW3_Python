@@ -113,3 +113,4 @@ courses = (('a', [81, 78, 57])), ('b', [95, 98]), ('c', [75, 45]), ('d', [58])
 print(tuple(map(first_value_In_pair,courses)))
 print(avg_grades(courses))
 print(map(avgrage1,courses))
+

@@ -39,7 +39,7 @@ def read_eval_print_loop():
 
 class Exp(object):
     """A call expression in Calculator.
-    
+
     >>> Exp('add', [1, 2])
     Exp('add', [1, 2])
     >>> str(Exp('add', [1, Exp('mul', [2, 3])]))
@@ -71,7 +71,7 @@ def calc_eval(exp):
 
 def calc_apply(operator, args):
     """Apply the named operator to a list of args.
-    
+
     >>> calc_apply('+', [1, 2, 3])
     6
     >>> calc_apply('-', [10, 1, 2, 3])
@@ -100,6 +100,17 @@ def calc_apply(operator, args):
         reshima=str(args)
         result=mint,(reshima,2)
         return result
+    # i write
+    if operator in ('!','compl'):
+        if len(args) == 0:
+            raise TypeError('compl requires at least 1 argumen')
+        if len(args) > 1:
+            raise TypeError('compl requires exactly 1 argument')
+        if type(args[0]) is not int:
+            raise TypeError(str(args[0]) + ' is not type'+str(type(1)) )
+        return int(''.join((map(lambda x:str(9 - int(x)),list(str(args[0]))))))
+
+
 # Parsing
 
 def calc_parse(line):
@@ -112,21 +123,20 @@ def calc_parse(line):
 
 def tokenize(line):
     """Convert a string into a list of tokens.
-    
+
     >>> tokenize('add(2, mul(4, 6))')
     ['add', '(', '2', ',', 'mul', '(', '4', ',', '6', ')', ')']
     """
-    #i add replace b with space
-    spaced = line.replace('(',' ( ').replace(')',' ) ').replace(',', ' , ')#.replace('b',' b ')
+    spaced = line.replace('(',' ( ').replace(')',' ) ').replace(',', ' , ')
     return spaced.strip().split()
 
-known_operators = ['add', 'sub', 'mul', 'div', '+', '-', '*', '/','b','q','h']
+known_operators = ['add', 'sub', 'mul', 'div','compl', '+', '-', '*', '/','!']
 
 def analyze(tokens):
     """Create a tree of nested lists from a sequence of tokens.
 
     Operand expressions can be separated by commas, spaces, or both.
-    
+
     >>> analyze(tokenize('add(2, mul(4, 6))'))
     Exp('add', [2, Exp('mul', [4, 6])])
     >>> analyze(tokenize('mul(add(2, mul(4, 6)), add(3, 5))'))
@@ -162,7 +172,7 @@ def assert_non_empty(tokens):
 
 def analyze_token(token):
     """Return the value of token if it can be analyzed as a number, or token.
-    
+
     >>> analyze_token('12')
     12
     >>> analyze_token('7.5')
@@ -182,7 +192,7 @@ def analyze_token(token):
             token=token.replace('h','')
             return int(token,16)
         return int(token)
-    except (TypeError, ValueError):
+    except (TypeError, ValueError) :
         try:
             return float(token)
         except (TypeError, ValueError):
